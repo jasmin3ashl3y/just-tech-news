@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "news source",
   "main": "server.js",
-  "start": "node server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "test"
   },
   "repository": {
@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/jasmin3ashl3y/just-tech-news/issues"
   },
-  "homepage": "https://github.com/jasmin3ashl3y/just-tech-news#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
