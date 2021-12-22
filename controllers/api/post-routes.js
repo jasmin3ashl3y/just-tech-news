@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
 const { Post, User, Comment, Vote } = require('../../models');
-const withAuth = require('../utils/auth');
+const withAuth = require('../../utils/auth');
 
 // get all users
-router.get('/', withAuth, (req, res) => {
+router.get('/', (req, res) => {
     console.log('======================');
     Post.findAll({
       attributes: [
@@ -36,7 +36,7 @@ router.get('/', withAuth, (req, res) => {
     });
 });
 
-router.get('/:id', withAuth, (req, res) => {
+router.get('/:id', (req, res) => {
     Post.findOne({
       where: {
         id: req.params.id
@@ -78,7 +78,6 @@ router.get('/:id', withAuth, (req, res) => {
 
 router.post('/', withAuth, (req, res) => {
   // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
-  if (req.session) {
     Post.create({
       title: req.body.title,
       post_url: req.body.post_url,
@@ -89,13 +88,10 @@ router.post('/', withAuth, (req, res) => {
         console.log(err);
         res.status(500).json(err);
       });
-  }
 });
 
 // PUT /api/posts/upvote
 router.put('/upvote', withAuth, (req, res) => {
-    // make sure the session exists first
-  if (req.session) {
     // pass session id along with all destructured properties on req.body
     Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
       .then(updatedVoteData => res.json(updatedVoteData))
@@ -103,7 +99,6 @@ router.put('/upvote', withAuth, (req, res) => {
         console.log(err);
         res.status(500).json(err);
       });
-  }
 });
 
 router.put('/:id', withAuth, (req, res) => {
